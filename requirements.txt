@@ -9,3 +9,4 @@ shap
 lime
 ipython
 torch
+pytest==6.2.4
