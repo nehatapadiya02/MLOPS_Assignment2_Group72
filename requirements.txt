@@ -1,0 +1,11 @@
+pandas
+numpy
+scikit-learn
+matplotlib
+seaborn
+sweetviz
+tpot
+shap
+lime
+ipython
+torch
