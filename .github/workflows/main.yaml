@@ -39,6 +39,9 @@ jobs:
       run: |
         pip show pytest-cov  # Verify that pytest-cov is installed
 
+    - name: Set PYTHONPATH
+      run: echo "PYTHONPATH=${{ github.workspace }}" >> $GITHUB_ENV
+
     - name: Run tests with coverage
       run: |
         pytest -v --cov=src tests/  # Run tests with coverage reporting
