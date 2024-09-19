@@ -35,9 +35,13 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt  # Install dependencies from the requirements.txt
 
-    - name: Run tests
+    - name: Verify pytest-cov installation
       run: |
-        pytest --cov=src tests/  # Run tests using pytest with coverage
+        pip show pytest-cov  # Verify that pytest-cov is installed
+
+    - name: Run tests with coverage
+      run: |
+        pytest -v --cov=src tests/  # Run tests with coverage reporting
 
     - name: Run data preprocessing and model selection
       run: |
