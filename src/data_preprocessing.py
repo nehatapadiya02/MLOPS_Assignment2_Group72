@@ -5,7 +5,7 @@ from sklearn.preprocessing import StandardScaler, OneHotEncoder, MinMaxScaler
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
 from sklearn.impute import SimpleImputer
-from category_encoders import TargetEncoder
+from category_encoders import TargetEncoder  # Ensure this is installed
 
 def perform_autoeda(df):
     # Create the report
@@ -81,9 +81,11 @@ def main():
     print("Data Description after pre-processing:")
     print(data.describe())
 
-    feature_names = ['Temperature (C)', 'Humidity', 'Wind Speed (km/h)', 'Visibility (km)',
-                     'Pressure (millibars)', 'Hour', 'DayOfWeek', 'Month',
-                     'Precip Type_rain', 'Precip Type_snow', 'TempDiff', 'Summary_encoded']
+    feature_names = [
+        'Temperature (C)', 'Humidity', 'Wind Speed (km/h)', 'Visibility (km)',
+        'Pressure (millibars)', 'Hour', 'DayOfWeek', 'Month',
+        'Precip Type_rain', 'Precip Type_snow', 'TempDiff', 'Summary_encoded'
+    ]
     # Save processed data to a new CSV
     processed_df = pd.DataFrame(data, columns=feature_names)
     processed_df.to_csv('weather_forecast_csv/processed_weatherHistory.csv', index=False)

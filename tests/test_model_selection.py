@@ -1,7 +1,13 @@
 import pytest
 import pandas as pd
-from sklearn.model_selection import train_test_split  # Added import
+from sklearn.model_selection import train_test_split  # Ensure this import is present
 from unittest.mock import patch
+import sys
+import os
+
+# Adjust PYTHONPATH to include the parent directory
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 from src.model_selection import load_data, train_and_evaluate_model
 
 @pytest.fixture
@@ -32,7 +38,7 @@ def test_train_and_evaluate_model(mock_tpot, sample_processed_data):
 
     # Mock TPOTRegressor behavior
     mock_model = mock_tpot.return_value
-    mock_model.predict.return_value = [0.55, 0.65]
+    mock_model.predict.return_value = [0.55]  # Adjusted to match y_test size
     mock_model.fit.return_value = mock_model
 
     # Call the function
