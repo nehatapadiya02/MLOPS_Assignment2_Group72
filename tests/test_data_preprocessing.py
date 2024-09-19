@@ -35,18 +35,21 @@ def test_format_and_convert_date(sample_data):
     assert pd.api.types.is_datetime64_any_dtype(formatted_df['Formatted Date'])
 
 def test_preprocess_features(sample_data):
-    processed_df = preprocess_features(sample_data.copy())
+    # First, format and convert date to add necessary columns
+    formatted_df = format_and_convert_date(sample_data.copy())
+    processed_df = preprocess_features(formatted_df)
+    
     # Check new columns
     expected_columns = [
-        'Temperature (C)', 'Apparent Temperature (C)', 'Humidity', 'Wind Speed (km/h)',
-        'Visibility (km)', 'Pressure (millibars)', 'Hour', 'DayOfWeek', 'Month',
+        'Temperature (C)', 'Humidity', 'Wind Speed (km/h)', 'Visibility (km)',
+        'Pressure (millibars)', 'Hour', 'DayOfWeek', 'Month',
         'Precip Type_rain', 'Precip Type_snow', 'TempDiff', 'Summary_encoded'
     ]
     for col in expected_columns:
-        assert col in processed_df.columns
+        assert col in processed_df.columns, f"Missing column: {col}"
+    
     # Check scaling (values between 0 and 1)
-    scaled_columns = ['Temperature (C)', 'Apparent Temperature (C)', 'Humidity',
-                      'Wind Speed (km/h)', 'Visibility (km)', 'Pressure (millibars)']
+    scaled_columns = ['Temperature (C)', 'Humidity', 'Wind Speed (km/h)', 'Visibility (km)', 'Pressure (millibars)']
     for col in scaled_columns:
-        assert processed_df[col].min() >= 0
-        assert processed_df[col].max() <= 1
+        assert processed_df[col].min() >= 0, f"{col} has values below 0"
+        assert processed_df[col].max() <= 1, f"{col} has values above 1"

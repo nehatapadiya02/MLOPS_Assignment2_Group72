@@ -1,9 +1,8 @@
 import pytest
 import pandas as pd
-from src.model_selection import load_data, train_and_evaluate_model
-from sklearn.ensemble import RandomForestRegressor
-from sklearn.metrics import mean_squared_error
+from sklearn.model_selection import train_test_split  # Added import
 from unittest.mock import patch
+from src.model_selection import load_data, train_and_evaluate_model
 
 @pytest.fixture
 def sample_processed_data():
@@ -29,7 +28,6 @@ def test_train_and_evaluate_model(mock_tpot, sample_processed_data):
     # Prepare data
     X = sample_processed_data.drop('Temperature (C)', axis=1)
     y = sample_processed_data['Temperature (C)']
-
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.5, random_state=42)
 
     # Mock TPOTRegressor behavior
