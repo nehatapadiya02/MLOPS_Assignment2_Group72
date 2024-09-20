@@ -4,10 +4,7 @@ from sklearn.model_selection import train_test_split  # Ensure this import is pr
 from unittest.mock import patch
 import sys
 import os
-
-# Adjust PYTHONPATH to include the parent directory
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-
 from src.model_selection import load_data, train_and_evaluate_model
 
 @pytest.fixture

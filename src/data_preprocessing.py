@@ -24,15 +24,6 @@ def clean_data(df):
 
     # Removing duplicates
     df = df.drop_duplicates()
-
-    # Detect and remove outliers (optional)
-    # def remove_outliers(series):
-    #     return series[np.abs(series - series.mean()) < (3 * series.std())]
-
-    # df['Temperature (C)'] = remove_outliers(df['Temperature (C)'])
-    # df['Humidity'] = remove_outliers(df['Humidity'])
-    # df['Wind Speed (km/h)'] = remove_outliers(df['Wind Speed (km/h)'])
-
     return df
 
 def format_and_convert_date(df):
