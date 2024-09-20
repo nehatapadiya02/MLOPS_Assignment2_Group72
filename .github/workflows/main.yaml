@@ -42,6 +42,10 @@ jobs:
     - name: Set PYTHONPATH
       run: echo "PYTHONPATH=${{ github.workspace }}" >> $GITHUB_ENV
 
+    - name: Set Environment Variables
+      run: |
+        echo "DATA_FILE=weather_forecast_csv/processed_weatherHistory.csv" >> $GITHUB_ENV
+
     - name: Run tests with coverage
       run: |
         pytest -v --cov=src tests/  # Run tests with coverage reporting
@@ -54,6 +58,12 @@ jobs:
     - name: Replace placeholders in best_model_pipeline.py
       run: |
         sed -i 's|PATH/TO/DATA/FILE|weather_forecast_csv/processed_weatherHistory.csv|g' best_model_pipeline.py
+        sed -i 's|COLUMN_SEPARATOR|,|g' best_model_pipeline.py
+
+    - name: Verify placeholder replacement
+      run: |
+        grep 'weather_forecast_csv/processed_weatherHistory.csv' best_model_pipeline.py
+        grep "sep=','" best_model_pipeline.py
 
     - name: Run LIME Explainability
       run: |
