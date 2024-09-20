@@ -51,6 +51,10 @@ jobs:
         python src/data_preprocessing.py  # Preprocessing step
         python src/model_selection.py  # Model selection and training
 
+    - name: Replace placeholders in best_model_pipeline.py
+      run: |
+        sed -i 's|PATH/TO/DATA/FILE|weather_forecast_csv/processed_weatherHistory.csv|g' best_model_pipeline.py
+
     - name: Run LIME Explainability
       run: |
         python src/lime_explainability.py  # LIME explainability step
