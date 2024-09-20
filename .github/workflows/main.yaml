@@ -50,3 +50,23 @@ jobs:
       run: |
         python src/data_preprocessing.py  # Preprocessing step
         python src/model_selection.py  # Model selection and training
+
+    - name: Run LIME Explainability
+      run: |
+        python src/lime_explainability.py  # LIME explainability step
+
+    - name: Run SHAP Explainability
+      run: |
+        python src/shap_explainability.py  # SHAP explainability step
+
+    - name: Upload LIME Explanation as Artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: lime-explanation
+        path: lime_explanation.html
+
+    - name: Upload SHAP Summary Plot as Artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: shap-summary-plot
+        path: shap_summary_plot.png
