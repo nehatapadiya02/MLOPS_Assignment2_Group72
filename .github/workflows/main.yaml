@@ -99,7 +99,7 @@ jobs:
 
     - name: Build and push Docker image
       run: |
-        IMAGE_URI="${{ secrets.AWS_ACCESS_KEY_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.ECR_REPOSITORY }}:${{ github.sha }}"
+        IMAGE_URI="${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.ECR_REPOSITORY }}:${{ github.sha }}"
         docker build -t $IMAGE_URI .
         docker push $IMAGE_URI
 
