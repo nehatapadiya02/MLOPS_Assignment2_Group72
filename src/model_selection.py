@@ -3,17 +3,20 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error
 from tpot import TPOTRegressor
+import joblib
 
 def load_data(file_path):
     return pd.read_csv(file_path)
 
 def train_and_evaluate_model(X_train, y_train, X_test, y_test):
-    tpot = TPOTRegressor(verbosity=2, generations=5, population_size=10, random_state=42)
+    tpot = TPOTRegressor(verbosity=2, generations=1, population_size=2, random_state=42)
     tpot.fit(X_train, y_train)
     y_pred = tpot.predict(X_test)
     mse = mean_squared_error(y_test, y_pred)
     print(f"Mean Squared Error of the best model: {mse}")
     tpot.export('best_model_pipeline.py')
+        # Save the trained pipeline using joblib for deployment
+    joblib.dump(tpot.fitted_pipeline_, 'model.pkl')
     print("Model training and selection complete. Best model exported to 'best_model_pipeline.py'.")
 
 def main():
