@@ -26,7 +26,7 @@ def sample_processed_data():
     df = pd.DataFrame(data)
     return df
 
-@patch('src.model_selection.TPOTRegressor')
+@patch('src.model_selection.TPOTRegressor',autospec=True)
 def test_train_and_evaluate_model(mock_tpot, sample_processed_data):
     # Prepare data
     X = sample_processed_data.drop('Temperature (C)', axis=1)
