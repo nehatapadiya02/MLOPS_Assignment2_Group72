@@ -53,3 +53,39 @@ This project involves data preprocessing, model training, and explainable AI (XA
 
 ## Dependencies
 pip install -r requirements.txt
+
+5. **Set up Docker Buildx**:
+   docker/setup-buildx-action@v2
+
+6. **Configure AWS Credentials**:
+   aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+   aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+   aws-region: ${{ secrets.AWS_REGION }}
+
+7. **Log in to Amazon ECR**:
+   id: ecr-login
+
+8. **Build and push Docker image**:
+   IMAGE_URI="${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.ECR_REPOSITORY }}:${{ github.sha }}"
+   docker build -t $IMAGE_URI .
+   docker push $IMAGE_URI
+
+9. **Check if Lambda function exists**:
+   if aws lambda get-function --function-name ${{ secrets.LAMBDA_FUNCTION_NAME }}; then
+       echo "exists=true" >> $GITHUB_ENV
+   else
+       echo "exists=false" >> $GITHUB_ENV
+   fi
+
+10. **Create or update Lambda function**:
+    if [ "${{ env.exists }}" = "true" ]; then
+        aws lambda update-function-code --function-name ${{ secrets.LAMBDA_FUNCTION_NAME }} \
+        --image-uri "${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.ECR_REPOSITORY }}:${{ github.sha }}"
+    else
+        aws lambda create-function --function-name ${{ secrets.LAMBDA_FUNCTION_NAME }} \
+        --package-type Image \
+        --code ImageUri="${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.ECR_REPOSITORY }}:${{ github.sha }}" \
+        --role arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/LambdaExecutionRole \
+        --timeout 70 \
+        --memory-size 512
+    fi
