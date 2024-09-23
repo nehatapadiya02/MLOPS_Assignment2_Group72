@@ -129,7 +129,7 @@ jobs:
         else
           aws lambda create-function --function-name ${{ secrets.LAMBDA_FUNCTION_NAME }} \
             --package-type Image \
-            --code ImageUri=$IMAGE_URI \
+            --code ImageUri= ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.ECR_REPOSITORY }}:${{ github.sha }} \
             --role arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/LambdaExecutionRole \
             --timeout 70 \
             --memory-size 512
