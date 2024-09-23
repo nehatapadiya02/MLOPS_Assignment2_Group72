@@ -130,7 +130,7 @@ jobs:
           aws lambda create-function --function-name ${{ secrets.LAMBDA_FUNCTION_NAME }} \
             --package-type Image \
             --code ImageUri=$IMAGE_URI \
-            --role arn:aws:iam::${{ secrets.AWS_ACCESS_KEY_ID }}:role/LambdaExecutionRole \
+            --role arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/LambdaExecutionRole \
             --timeout 70 \
             --memory-size 512
         fi
