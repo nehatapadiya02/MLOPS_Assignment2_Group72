@@ -125,12 +125,14 @@ jobs:
       run: |
         if [ "${{ env.exists }}" = "true" ]; then
           aws lambda update-function-code --function-name ${{ secrets.LAMBDA_FUNCTION_NAME }} \
-            --image-uri "${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.ECR_REPOSITORY }}:${{ github.sha }}"
+            --image-uri "${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.ECR_REPOSITORY }}:${{ github.sha }}" \
+            --environment Variables="{JOBLIB_MULTIPROCESSING=0}"
         else
           aws lambda create-function --function-name ${{ secrets.LAMBDA_FUNCTION_NAME }} \
             --package-type Image \
             --code ImageUri="${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.ECR_REPOSITORY }}:${{ github.sha }}" \
             --role arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/LambdaExecutionRole \
             --timeout 70 \
-            --memory-size 512
+            --memory-size 512 \
+            --environment Variables="{JOBLIB_MULTIPROCESSING=0}"
         fi
