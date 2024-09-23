@@ -51,7 +51,7 @@ def test_train_and_evaluate_model(mock_mse, mock_joblib_dump, mock_tpot, sample_
     train_and_evaluate_model(X_train, y_train, X_test, y_test)
 
     # Assertions
-    mock_tpot.assert_called_once_with(verbosity=2, generations=1, population_size=2, random_state=42)
+    mock_tpot.assert_called_once_with(verbosity=2, generations=5, population_size=10, random_state=42)
     mock_model.fit.assert_called_once_with(X_train, y_train)
     mock_model.predict.assert_called_once_with(X_test)
     mock_mse.assert_called_once_with(y_test, mock_model.predict.return_value)
