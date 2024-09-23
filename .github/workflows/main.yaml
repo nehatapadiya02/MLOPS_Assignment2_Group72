@@ -125,7 +125,7 @@ jobs:
       run: |
         if [ "${{ env.exists }}" = "true" ]; then
           aws lambda update-function-code --function-name ${{ secrets.LAMBDA_FUNCTION_NAME }} \
-            --image-uri $IMAGE_URI
+            --image-uri "${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.ECR_REPOSITORY }}:${{ github.sha }}"
         else
           aws lambda create-function --function-name ${{ secrets.LAMBDA_FUNCTION_NAME }} \
             --package-type Image \
