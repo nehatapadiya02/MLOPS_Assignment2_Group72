@@ -10,7 +10,7 @@ import os
         # Load the model from the same directory as this script
 model_path = os.path.join(os.path.dirname(__file__), 'model.pkl')
 model = joblib.load(model_path)
-os.environ['JOBLIB_MULTIPROCESSING'] = 0
+os.environ['JOBLIB_MULTIPROCESSING'] = "0"
 
 def lambda_handler(event, context):
     try:
